@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { use, useEffect, useRef } from 'react'
 import { cases, type AffinityCluster, type Persona } from '../../data/cases'
 import Nav from '../../components/Nav'
 
@@ -102,8 +102,9 @@ function Divider() {
   return <div style={{ width:'100%', height:1, background:'var(--border)', margin:'48px 0' }} />
 }
 
-export default function CasePage({ params }: { params: { slug: string } }) {
-  const cs = cases.find(c => c.slug === params.slug)
+export default function CasePage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = use(params)
+  const cs = cases.find(c => c.slug === resolvedParams.slug)
   if (!cs) notFound()
 
   return (
@@ -342,3 +343,4 @@ function RecoIcon({ index }: { index: number }) {
   const paths = ["M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z","M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z","M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z","M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"]
   return <svg style={{ width:20,height:20,fill:'var(--terra)' }} viewBox="0 0 24 24"><path d={paths[index % paths.length]}/></svg>
 }
+
