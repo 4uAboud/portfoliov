@@ -105,7 +105,7 @@ function Divider() {
 export default function CasePage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params)
   const cs = cases.find(c => c.slug === resolvedParams.slug)
-  if (!cs) notFound()
+```
 
   return (
     <>
